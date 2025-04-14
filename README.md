@@ -363,3 +363,7 @@ void loop() {
   Serial.println("Client disconnected");
 }
 ```
+
+![Screenshot (292)](https://github.com/user-attachments/assets/ec1f6e4d-4f74-473d-9acf-1237d4b6b5c6)
+
+
