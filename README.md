@@ -1,5 +1,5 @@
 # `ArduinoIDE` & `PlatformIO` setup
-
+> also this repo has a `PlatformIO project`
 ---
 
 # ArduinoIDE
