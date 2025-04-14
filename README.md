@@ -1,5 +1,8 @@
-# Arduino-IDE-setup
+# `ArduinoIDE` & `PlatformIO` setup
 
+---
+
+# ArduinoIDE
 ## Prefecences
 
 ![Screenshot (272)](https://github.com/user-attachments/assets/cd101243-bd42-4cbd-9259-71a12630a777)
