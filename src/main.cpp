@@ -1,12 +1,13 @@
 #include <Arduino.h>
-#include <ESP8266WiFi.h>
+// #include <ESP8266WiFi.h>
+#include <WiFi.h> // Use this for ESP32
 
 // Set up access point credentials
 const char *ssid = "ESP8266-LED";  // Wi-Fi Name
 const char *password = "12345678"; // Wi-Fi Password (min 8 chars)
 
 // Set the onboard LED pin
-const int ledPin = 2; // D4 on NodeMCU is GPIO2 (active LOW)
+const int ledPin = 2; // D4 on NodeMCU is GPIO2 (active LOW) & GPIO2 is commonly onboard LED in ESP32 also
 
 // Create server on port 80
 WiFiServer server(80);
@@ -17,7 +18,8 @@ void setup() {
 
   // Set LED pin as output
   pinMode(ledPin, OUTPUT);
-  digitalWrite(ledPin, HIGH); // Turn OFF initially (active LOW)
+  // digitalWrite(ledPin, HIGH); // Turn OFF initially (active LOW)
+  digitalWrite(ledPin, LOW); // ESP32 onboard LED usually active HIGH
 
   // Start the access point
   WiFi.softAP(ssid, password);
@@ -47,10 +49,12 @@ void loop() {
 
   // LED control logic
   if (request.indexOf("/LED=ON") != -1) {
-    digitalWrite(ledPin, LOW); // Turn ON (active LOW)
+    // digitalWrite(ledPin, LOW); // Turn ON (active LOW) ESP 8266
+    digitalWrite(ledPin, HIGH); // Turn ON (active HIGH on ESP32)
   }
   if (request.indexOf("/LED=OFF") != -1) {
-    digitalWrite(ledPin, HIGH); // Turn OFF
+    // digitalWrite(ledPin, HIGH); // Turn OFF - 8266
+    digitalWrite(ledPin, LOW); // Turn OFF - ESP32
   }
 
   // Webpage HTML
