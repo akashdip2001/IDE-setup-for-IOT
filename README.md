@@ -285,3 +285,5 @@ You can add more options later (like libraries, OTA, etc.).
 | Serial Monitor | Built-in, customizable |
 
 ---
+
+![Screenshot (286)](https://github.com/user-attachments/assets/4c1b3f52-ecb6-467e-95d7-dc3e20436ab4)
