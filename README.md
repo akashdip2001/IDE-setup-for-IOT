@@ -125,3 +125,15 @@ void loop() {
    - Connect to `ESP8266-LED` (password: `12345678`)
 4. Open a browser and visit `192.168.4.1`
 5. Click **"Turn ON"** or **"Turn OFF"** to control the onboard LED.
+
+---
+
+</br>
+</br>
+
+<div style="display: flex; align-items: center; gap: 10px;" align="center">
+  
+## ⭐ Projects ⭐
+</div>
+
+[![Screenshot_14-4-2025_163550_www youtube com](https://github.com/user-attachments/assets/974a1c49-8330-44cc-a3c7-a4a4a382c108)](https://www.youtube.com/playlist?list=PL_RecMEcs_p-5UwLqFBFtat90L8IOc1bZ)
