@@ -367,4 +367,206 @@ void loop() {
 ![Screenshot (290)](https://github.com/user-attachments/assets/69f042e1-b6a8-4eda-a7f3-80e4f8e8ebff)
 ![Screenshot (292)](https://github.com/user-attachments/assets/ec1f6e4d-4f74-473d-9acf-1237d4b6b5c6)
 
+## update for ESP 32
+> see the main code in the `src` & `platformio.ini` and I can maintion all changes.
 
+Absolutely! Here's what you need to change when moving your project from **ESP8266** to **ESP32 (ESP-WROOM-32)**:
+
+---
+
+### 🔧 1. **Change the `platformio.ini` file**
+
+Replace:
+```ini
+[env:nodemcuv2]
+platform = espressif8266
+board = nodemcuv2
+framework = arduino
+```
+
+With:
+```ini
+[env:esp32dev]
+platform = espressif32
+board = esp32dev
+framework = arduino
+monitor_speed = 115200
+```
+
+---
+
+### 🔧 2. **Update GPIO Pin Numbers in Code**
+
+If you were using pins like `D1`, `D2`, etc. on ESP8266, change them to ESP32 GPIOs.
+
+For example:
+
+#### ✅ Before (for ESP8266):
+```cpp
+#define FRONT_LED D1
+#define BACK_LED  D2
+#define LEFT_LED  D3
+#define RIGHT_LED D4
+```
+
+#### 🔁 After (for ESP32):
+Replace them with real GPIO numbers:
+```cpp
+#define FRONT_LED 18
+#define BACK_LED  19
+#define LEFT_LED  21
+#define RIGHT_LED 22
+```
+
+> 🧠 You can use any GPIOs like 2, 4, 5, 18, 19, 21, 22, 23 — just avoid pins like 6–11 (used for flash).
+
+---
+
+### 🔧 3. **No Change Needed for `setup()` and `loop()`**
+
+Your usual Arduino code stays the same:
+```cpp
+void setup() {
+  pinMode(FRONT_LED, OUTPUT);
+  pinMode(BACK_LED, OUTPUT);
+  pinMode(LEFT_LED, OUTPUT);
+  pinMode(RIGHT_LED, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(FRONT_LED, HIGH);
+  delay(1000);
+  digitalWrite(FRONT_LED, LOW);
+  delay(1000);
+}
+```
+---
+
+### complete Updated Code
+
+<details>
+  
+```cpp
+#include <Arduino.h>
+// #include <ESP8266WiFi.h>
+#include <WiFi.h> // Use this for ESP32
+
+// Set up access point credentials
+const char *ssid = "ESP8266-LED";  // Wi-Fi Name
+const char *password = "12345678"; // Wi-Fi Password (min 8 chars)
+
+// Set the onboard LED pin
+const int ledPin = 2; // D4 on NodeMCU is GPIO2 (active LOW) & GPIO2 is commonly onboard LED in ESP32 also
+
+// Create server on port 80
+WiFiServer server(80);
+
+void setup() {
+  // Start serial communication
+  Serial.begin(115200);
+
+  // Set LED pin as output
+  pinMode(ledPin, OUTPUT);
+  // digitalWrite(ledPin, HIGH); // Turn OFF initially (active LOW)
+  digitalWrite(ledPin, LOW); // ESP32 onboard LED usually active HIGH
+
+  // Start the access point
+  WiFi.softAP(ssid, password);
+  Serial.println("Access Point Started!");
+  Serial.print("Connect to: "); Serial.println(ssid);
+  Serial.print("IP address: "); Serial.println(WiFi.softAPIP());
+
+  // Start the server
+  server.begin();
+}
+
+void loop() {
+  WiFiClient client = server.available();
+  if (!client) {
+    return;
+  }
+
+  Serial.println("Client connected!");
+  while (!client.available()) {
+    delay(1);
+  }
+
+  // Read HTTP request
+  String request = client.readStringUntil('\r');
+  Serial.println(request);
+  client.flush();
+
+  // LED control logic
+  if (request.indexOf("/LED=ON") != -1) {
+    // digitalWrite(ledPin, LOW); // Turn ON (active LOW) ESP 8266
+    digitalWrite(ledPin, HIGH); // Turn ON (active HIGH on ESP32)
+  }
+  if (request.indexOf("/LED=OFF") != -1) {
+    // digitalWrite(ledPin, HIGH); // Turn OFF - 8266
+    digitalWrite(ledPin, LOW); // Turn OFF - ESP32
+  }
+
+  // Webpage HTML
+  String html = "<!DOCTYPE html><html>";
+  html += "<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
+  html += "<style>body{font-family:sans-serif;text-align:center;}button{padding:16px;font-size:20px;}</style></head>";
+  html += "<body><h2>ESP8266 LED Control</h2>";
+  html += "<p><a href=\"/LED=ON\"><button>Turn ON</button></a></p>";
+  html += "<p><a href=\"/LED=OFF\"><button>Turn OFF</button></a></p>";
+  html += "</body></html>";
+
+  // Send response
+  client.print("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n");
+  client.print(html);
+
+  delay(1);
+  Serial.println("Client disconnected");
+}
+```
+
+</details>
+
+---
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/f53fe305-77ce-4d1a-a1a7-6438eefc689d" alt="Image 1" width="46%" style="margin-right: 10px;"/>
+  <img src="https://github.com/user-attachments/assets/021351bc-84c5-4960-b190-92cbbde977b4" alt="Image 2" width="46%" style="margin-right: 10px;"/>
+</p>
+
+How to **see the IP address** of ESP-WROOM-32 (Access Point mode) after uploading the code:
+
+---
+
+### 🔍 Steps to View IP Address in PlatformIO Serial Monitor:
+
+1. **Open the Serial Monitor**:
+   - Click the **"plug" icon** 🔌 at the bottom bar of VS Code (or go to **Terminal > New Terminal** and run):
+     ```
+     pio device monitor
+     ```
+   - Or use the shortcut: `Ctrl + Alt + M` (Windows/Linux) or `Cmd + Alt + M` (Mac).
+
+2. **Wait for Boot Logs**:
+   - After uploading, the ESP32 reboots and prints messages like:
+     ```
+     Access Point Started!
+     Connect to: ESP32-LED
+     IP address: 192.168.4.1
+     ```
+
+3. **Connect to Wi-Fi on Phone/Laptop**:
+   - Go to Wi-Fi settings on your phone/laptop.
+   - Connect to the Wi-Fi network: `ESP32-LED` with password `12345678`.
+
+4. **Open Browser**:
+   - In the browser, go to: [http://192.168.4.1](http://192.168.4.1)
+
+---
+
+### 🧠 Tip:
+If the Serial Monitor is not showing any output, make sure:
+- You have `Serial.begin(115200);` in your code (you do ✅).
+- `monitor_speed = 115200` is set correctly in your `platformio.ini`.
+- You don’t have multiple monitors open.
+
+![Screenshot (295)](https://github.com/user-attachments/assets/1e85d961-4b5b-4096-a04b-73866d723596)
