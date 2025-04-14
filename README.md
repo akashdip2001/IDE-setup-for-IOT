@@ -190,8 +190,8 @@ If you haven't already:
 PlatformIO will now generate a project structure and install the necessary platform files.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/396503f1-4709-4d13-896f-d9d2855367e2" alt="Image 1" width="59%" style="margin-right: 10px;"/>
-  <img src="https://github.com/user-attachments/assets/e0253702-ee6c-4a1e-b1c9-3bbb77f2e136" alt="Image 2" width="33%" style="margin-right: 10px;"/>
+  <img src="https://github.com/user-attachments/assets/396503f1-4709-4d13-896f-d9d2855367e2" alt="Image 1" width="46%" style="margin-right: 10px;"/>
+  <img src="https://github.com/user-attachments/assets/e0253702-ee6c-4a1e-b1c9-3bbb77f2e136" alt="Image 2" width="46%" style="margin-right: 10px;"/>
 </p>
 
 ---
