@@ -573,3 +573,94 @@ If the Serial Monitor is not showing any output, make sure:
 - You don’t have multiple monitors open.
 
 ![Screenshot (295)](https://github.com/user-attachments/assets/1e85d961-4b5b-4096-a04b-73866d723596)
+
+---
+
+<details>
+  <summary style="opacity: 0.85;"><b>⚙️📌 Upload in GitHub without Login</b></summary><br>
+
+If you want to **push just this one project folder** to a **different GitHub account/repo (temporarily)** using my **personal access token**, without affecting your existing projects or GitHub account setup in VS Code.
+
+---
+
+## ✅ Steps to Upload This Folder to That Repo (Temporarily)
+
+### 🐦 1. Open terminal in the project folder
+
+```bash
+cd path/to/ARDUINO-with-OLED-Display
+```
+
+### 🐦 2. Set Git user for just that project:
+Open the terminal in that project folder and run:
+
+```bash
+git config user.name "Their Name"
+git config user.email "their-email@example.com"
+```
+
+This overrides your global Git identity only for this repo. So your commits will look like they came from them (or from whoever should be listed as contributor).
+
+### 🐦 3. Initialize Git (if not already)
+
+```bash
+git init
+```
+
+### 🐦 4. Add and commit all files
+
+```bash
+git add .
+git commit -m "Initial commit for OLED project"
+```
+
+### 🐦 5. Add the remote with token (for one-time push)
+
+![Screenshot (328)](https://github.com/user-attachments/assets/b66abca0-c6e4-4285-aa8b-4fc74923ccdc)
+
+Replace `<YOUR_TOKEN_HERE>` with your actual **Personal Access Token**:
+
+```bash
+git remote add origin https://<YOUR_TOKEN_HERE>@github.com/Arkadip2007/ARDUINO-with-OLED-Display.git
+```
+
+**Important**: Don’t put `<>` around the token when actually typing.
+
+✅ Example:
+```bash
+git remote add origin https://ghp_abcd123456789yourtoken@github.com/Arkadip2007/ARDUINO-with-OLED-Display.git
+```
+
+> This way it won’t ask for username/password and uses your token directly.
+
+### 🐦 6. Set the branch name (if needed)
+
+```bash
+git branch -M main
+```
+
+### 🚀 6. Push to GitHub
+
+```bash
+git push -u origin main
+```
+
+---
+
+## ✅ Optional: Clean up after push (secure)
+
+After you're done, you can **remove the remote with token** to avoid accidentally leaking it:
+
+```bash
+git remote set-url origin https://github.com/Arkadip2007/ARDUINO-with-OLED-Display.git
+```
+
+Or just delete the `.git` folder if this was a one-time thing:
+
+```bash
+rm -rf .git
+```
+
+</details>
+
+---
